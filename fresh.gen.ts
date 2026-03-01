@@ -20,7 +20,7 @@ import * as $ProfileHeader from "./islands/ProfileHeader.tsx";
 import * as $RegisterForm from "./islands/RegisterForm.tsx";
 import * as $incidents_list from "./islands/incidents_list.tsx";
 import * as $logout from "./islands/logout.tsx";
-import { type Manifest } from "$fresh/server.ts";
+import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
