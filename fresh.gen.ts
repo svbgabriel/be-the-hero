@@ -14,12 +14,12 @@ import * as $incidents_new from "./routes/incidents/new.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $profile_index from "./routes/profile/index.tsx";
 import * as $register_index from "./routes/register/index.tsx";
+import * as $IncidentsList from "./islands/IncidentsList.tsx";
 import * as $LogonForm from "./islands/LogonForm.tsx";
+import * as $Logout from "./islands/Logout.tsx";
 import * as $NewIncidentForm from "./islands/NewIncidentForm.tsx";
 import * as $ProfileHeader from "./islands/ProfileHeader.tsx";
 import * as $RegisterForm from "./islands/RegisterForm.tsx";
-import * as $incidents_list from "./islands/incidents_list.tsx";
-import * as $logout from "./islands/logout.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -38,12 +38,12 @@ const manifest = {
     "./routes/register/index.tsx": $register_index,
   },
   islands: {
+    "./islands/IncidentsList.tsx": $IncidentsList,
     "./islands/LogonForm.tsx": $LogonForm,
+    "./islands/Logout.tsx": $Logout,
     "./islands/NewIncidentForm.tsx": $NewIncidentForm,
     "./islands/ProfileHeader.tsx": $ProfileHeader,
     "./islands/RegisterForm.tsx": $RegisterForm,
-    "./islands/incidents_list.tsx": $incidents_list,
-    "./islands/logout.tsx": $logout,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

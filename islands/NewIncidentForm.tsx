@@ -30,7 +30,7 @@ export default function NewIncidentForm() {
         throw new Error();
       }
 
-      window.location.href = "/profile";
+      globalThis.location.href = "/profile";
     } catch (_err) {
       alert("Error registering case, please try again.");
     }

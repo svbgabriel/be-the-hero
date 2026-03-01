@@ -35,7 +35,7 @@ export default function RegisterForm() {
 
       alert(`Your access ID: ${resData.id}`);
 
-      window.location.href = "/";
+      globalThis.location.href = "/";
     } catch (_err) {
       alert("Registration error, please try again.");
     }

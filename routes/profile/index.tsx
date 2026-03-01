@@ -1,6 +1,6 @@
 import { asset, Head } from "$fresh/runtime.ts";
-import Logout from "../../islands/logout.tsx";
-import IncidentsList from "../../islands/incidents_list.tsx";
+import Logout from "../../islands/Logout.tsx";
+import IncidentsList from "../../islands/IncidentsList.tsx";
 import ProfileHeader from "../../islands/ProfileHeader.tsx";
 
 export default function Profile() {

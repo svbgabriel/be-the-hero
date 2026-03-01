@@ -3,7 +3,7 @@ import { FiPower } from "react-icons/fi";
 export default function Logout() {
   function handleLogout() {
     localStorage.clear();
-    window.location.href = "/";
+    globalThis.location.href = "/";
   }
 
   return (
