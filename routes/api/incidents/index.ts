@@ -1,6 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
 import { Incident } from "../../../types/incident.ts";
-import { IncidentInfo } from "../../../types/incident_info.ts";
 import {
   createIncident,
   listIncidentsInfo,
@@ -34,13 +33,14 @@ export const handler: Handlers<Incident | null> = {
 
     return new Response(JSON.stringify(result));
   },
-  async GET(_req, _ctx) {
-    const incidents_info: IncidentInfo[] = await listIncidentsInfo();
+  async GET(req, _ctx) {
+    const url = new URL(req.url);
+    const page = Number(url.searchParams.get("page")) || 1;
 
-    const count = incidents_info.length;
+    const { incidents_info, totalCount } = await listIncidentsInfo(page);
 
     const headers = new Headers();
-    headers.set("X-Total-Count", count.toString());
+    headers.set("X-Total-Count", totalCount.toString());
 
     return new Response(JSON.stringify(incidents_info), { headers });
   },

@@ -13,8 +13,11 @@ import * as $api_sessions_index from "./routes/api/sessions/index.ts";
 import * as $incidents_new from "./routes/incidents/new.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $profile_index from "./routes/profile/index.tsx";
-import * as $register_success_ from "./routes/register/[success].tsx";
 import * as $register_index from "./routes/register/index.tsx";
+import * as $LogonForm from "./islands/LogonForm.tsx";
+import * as $NewIncidentForm from "./islands/NewIncidentForm.tsx";
+import * as $ProfileHeader from "./islands/ProfileHeader.tsx";
+import * as $RegisterForm from "./islands/RegisterForm.tsx";
 import * as $incidents_list from "./islands/incidents_list.tsx";
 import * as $logout from "./islands/logout.tsx";
 import { type Manifest } from "$fresh/server.ts";
@@ -32,10 +35,13 @@ const manifest = {
     "./routes/incidents/new.tsx": $incidents_new,
     "./routes/index.tsx": $index,
     "./routes/profile/index.tsx": $profile_index,
-    "./routes/register/[success].tsx": $register_success_,
     "./routes/register/index.tsx": $register_index,
   },
   islands: {
+    "./islands/LogonForm.tsx": $LogonForm,
+    "./islands/NewIncidentForm.tsx": $NewIncidentForm,
+    "./islands/ProfileHeader.tsx": $ProfileHeader,
+    "./islands/RegisterForm.tsx": $RegisterForm,
     "./islands/incidents_list.tsx": $incidents_list,
     "./islands/logout.tsx": $logout,
   },

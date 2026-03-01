@@ -1,9 +1,10 @@
-import { crypto } from "jsr:@std/crypto";
-import { Ong } from "../types/ong.ts";
-import { kv } from "../database.ts";
+import {Ong} from "../types/ong.ts";
+import {kv} from "../database.ts";
 
 export const createOng = async (ong: Ong) => {
-  ong.id = crypto.randomUUID();
+  ong.id = Array.from(crypto.getRandomValues(new Uint8Array(4)))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
 
   const ongKey = ["ong", ong.id!];
   const ok = await kv.atomic().set(ongKey, ong).commit();

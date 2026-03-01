@@ -1,7 +1,9 @@
-import { Incident } from "./incident.ts";
-
 export type IncidentInfo = {
-  incident: Incident;
+  id: string;
+  title: string;
+  description: string;
+  value: string;
+  ong_id: string;
   name: string;
   email: string;
   whatsapp: string;

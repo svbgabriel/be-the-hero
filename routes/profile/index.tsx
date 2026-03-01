@@ -1,10 +1,9 @@
 import { asset, Head } from "$fresh/runtime.ts";
 import Logout from "../../islands/logout.tsx";
 import IncidentsList from "../../islands/incidents_list.tsx";
+import ProfileHeader from "../../islands/ProfileHeader.tsx";
 
 export default function Profile() {
-  const ongName = localStorage.getItem("ongName");
-
   return (
     <>
       <Head>
@@ -13,10 +12,10 @@ export default function Profile() {
       <div className="profile-container">
         <header>
           <img src={asset("/logo.svg")} alt="Be The Hero" />
-          <span>Bem vinda, {ongName}</span>
+          <ProfileHeader />
 
           <a className="button" href="/incidents/new">
-            Cadastrar novo caso
+            Register new case
           </a>
           <Logout />
         </header>

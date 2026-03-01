@@ -1,49 +1,64 @@
 import { FiTrash2 } from "react-icons/fi";
 import { useEffect, useState } from "preact/hooks";
 import { Incident } from "../types/incident.ts";
-import {
-  deleteIncident,
-  listIncidentsByOng,
-} from "../repositories/incident_repository.ts";
 
 export default function IncidentsList() {
-  const ongId = localStorage.getItem("ongId")!;
   const [incidents, setIncidents] = useState<Incident[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const incidents: Incident[] = await listIncidentsByOng(ongId);
+    const ongId = localStorage.getItem("ongId");
+    if (!ongId) return;
 
-      setIncidents(incidents);
+    const fetchData = async () => {
+      const response = await fetch("/api/profile", {
+        headers: {
+          Authorization: ongId,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setIncidents(data);
+      }
     };
 
     fetchData().catch();
-  }, [ongId]);
+  }, []);
 
   const handleDeleteIncident = async (id: string) => {
+    const ongId = localStorage.getItem("ongId");
     try {
-      await deleteIncident(id);
+      const response = await fetch(`/api/incidents/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: ongId!,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error();
+      }
 
       setIncidents(incidents.filter((incident) => incident.id !== id));
     } catch (_err) {
-      throw Error("Erro ao deletar caso, tente novamente.");
+      alert("Error deleting case, please try again.");
     }
   };
 
   return (
     <>
-      <h1>Casos cadastrados</h1>
+      <h1>Registered cases</h1>
 
       <ul>
         {incidents.map((incident) => (
           <li key={incident.id}>
-            <strong>CASO:</strong>
+            <strong>CASE:</strong>
             <p>{incident.title}</p>
-            <strong>DESCRIÇÃO:</strong>
+            <strong>DESCRIPTION:</strong>
             <p>{incident.description}</p>
-            <strong>VALOR:</strong>
+            <strong>VALUE:</strong>
             <p>
-              {Intl.NumberFormat("pt-BR", {
+              {Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "BRL",
               }).format(Number(incident.value))}

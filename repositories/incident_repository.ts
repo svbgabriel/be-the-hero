@@ -28,11 +28,15 @@ export const listIncidentsByOng = async (ongId: string) => {
   });
 };
 
-export const listIncidentsInfo = async () => {
+export const listIncidentsInfo = async (page = 1) => {
   const incidents: Incident[] = [];
   for await (const res of kv.list<Incident>({ prefix: ["incident"] })) {
     incidents.push(res.value);
   }
+
+  const totalCount = incidents.length;
+  const start = (page - 1) * 5;
+  const paginatedIncidents = incidents.slice(start, start + 5);
 
   const ongs: Ong[] = [];
   for await (const res of kv.list<Ong>({ prefix: ["ong"] })) {
@@ -40,7 +44,7 @@ export const listIncidentsInfo = async () => {
   }
 
   const incidents_info: IncidentInfo[] = [];
-  for (const incident of incidents) {
+  for (const incident of paginatedIncidents) {
     const ong = ongs.find((ong) => {
       return ong.id === incident.ong_id;
     });
@@ -48,7 +52,11 @@ export const listIncidentsInfo = async () => {
       continue;
     }
     incidents_info.push({
-      incident,
+      id: incident.id!,
+      title: incident.title,
+      description: incident.description,
+      value: incident.value,
+      ong_id: incident.ong_id,
       name: ong.name,
       email: ong.email,
       whatsapp: ong.whatsapp,
@@ -57,7 +65,7 @@ export const listIncidentsInfo = async () => {
     });
   }
 
-  return incidents_info;
+  return { incidents_info, totalCount };
 };
 
 export const deleteIncident = async (id: string) => {
