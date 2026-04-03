@@ -1,6 +1,7 @@
 {
   "lock": false,
   "tasks": {
+    "test": "deno test -A --unstable-kv tests/",
     "check": "deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",
     "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
     "manifest": "deno task cli manifest $(pwd)",
@@ -18,7 +19,12 @@
     "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1",
     "$std/": "https://deno.land/std@0.216.0/",
-    "react-icons/fi": "https://cdn.jsdelivr.net/gh/urielch/react-icons-fi@1.0.10/mod.ts"
+    "react-icons/fi": "https://cdn.jsdelivr.net/gh/urielch/react-icons-fi@1.0.10/mod.ts",
+    "preact-render-to-string": "https://esm.sh/preact-render-to-string@6.4.0?deps=preact@10.22.0"
   },
-  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" }
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "lib": ["deno.ns", "deno.unstable", "dom"]
+  }
 }
