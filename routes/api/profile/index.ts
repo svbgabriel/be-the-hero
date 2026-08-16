@@ -1,19 +1,18 @@
-import { Handlers } from "$fresh/server.ts";
-import { Incident } from "../../../types/incident.ts";
-import { listIncidentsByOng } from "../../../repositories/incident_repository.ts";
+import { define } from "@/utils.ts";
+import { listIncidentsByOng } from "@/repository/incident.repository.ts";
 
-export const handler: Handlers<Incident | null> = {
-  async GET(req, _ctx) {
-    const ong_id = req.headers.get("authorization");
+export const handler = define.handlers({
+  async GET(ctx) {
+    const ongId = ctx.state?.ongId;
 
-    if (!ong_id) {
+    if (!ongId) {
       return new Response(JSON.stringify({ error: "Not authorized" }), {
         status: 401,
       });
     }
 
-    const incidents = await listIncidentsByOng(ong_id);
+    const incidents = await listIncidentsByOng(ongId);
 
     return new Response(JSON.stringify(incidents));
   },
-};
+});

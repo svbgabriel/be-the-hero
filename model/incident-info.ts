@@ -3,7 +3,7 @@ export type IncidentInfo = {
   title: string;
   description: string;
   value: string;
-  ong_id: string;
+  ongId: string;
   name: string;
   email: string;
   whatsapp: string;

@@ -1,4 +1,4 @@
-import { PageProps } from "$fresh/server.ts";
+import { PageProps } from "fresh";
 
 export default function Error500Page({ error }: PageProps) {
   return (

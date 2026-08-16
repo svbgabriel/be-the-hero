@@ -1,14 +1,18 @@
-/// <reference no-default-lib="true" />
-/// <reference lib="dom" />
-/// <reference lib="dom.iterable" />
-/// <reference lib="dom.asynciterable" />
-/// <reference lib="deno.ns" />
-/// <reference lib="deno.unstable" />
+import { App, staticFiles } from "fresh";
+import { type State } from "@/utils.ts";
+import { getCookies } from "@std/http/cookie";
 
-import "$std/dotenv/load.ts";
+export const app = new App<State>();
 
-import { start } from "$fresh/server.ts";
-import manifest from "./fresh.gen.ts";
-import config from "./fresh.config.ts";
+// Enable Fresh static file serving
+app.use(staticFiles());
 
-await start(manifest, config);
+// Session middleware
+app.use(async (ctx) => {
+  const cookies = getCookies(ctx.req.headers);
+  ctx.state.ongId = cookies.session || ctx.req.headers.get("authorization") || undefined;
+  return await ctx.next();
+});
+
+// Include file-system based routes here
+app.fsRoutes();

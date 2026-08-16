@@ -1,6 +1,6 @@
-import { assertEquals } from "$std/assert/mod.ts";
-import { handler } from "../../routes/api/ongs/index.ts";
-import { kv } from "../../database.ts";
+import { assertEquals } from "@std/assert";
+import { handler } from "@/routes/api/ongs/index.ts";
+import { db } from "@/database.ts";
 
 Deno.test("API - /api/ongs - should create an ONG", async () => {
   const ongData = {
@@ -16,14 +16,15 @@ Deno.test("API - /api/ongs - should create an ONG", async () => {
     body: JSON.stringify(ongData),
   });
 
-  const resp = await handler.POST!(req, {} as any);
+  const ctx = { req } as unknown as Parameters<NonNullable<typeof handler.POST>>[0];
+  const resp = await handler.POST!(ctx);
   assertEquals(resp.status, 200);
 
   const result = await resp.json();
   assertEquals(result.name, ongData.name);
-  
+
   // Cleanup
-  await kv.delete(["ong", result.id]);
+  db.prepare("DELETE FROM ongs WHERE id = ?").run(result.id);
 });
 
 Deno.test("API - /api/ongs - should list ONGs", async () => {
@@ -31,7 +32,8 @@ Deno.test("API - /api/ongs - should list ONGs", async () => {
     method: "GET",
   });
 
-  const resp = await handler.GET!(req, {} as any);
+  const ctx = { req } as unknown as Parameters<NonNullable<typeof handler.GET>>[0];
+  const resp = await handler.GET!(ctx);
   assertEquals(resp.status, 200);
 
   const result = await resp.json();

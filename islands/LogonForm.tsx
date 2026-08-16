@@ -1,5 +1,5 @@
 import { useState } from "preact/hooks";
-import { FiLogIn } from "react-icons/fi";
+import { FiLogIn } from "@preact-icons/fi";
 
 export default function LogonForm() {
   const [id, setId] = useState("");
@@ -26,7 +26,8 @@ export default function LogonForm() {
       localStorage.setItem("ongName", data.name);
 
       globalThis.location.href = "/profile";
-    } catch (_err) {
+    }
+    catch (_err) {
       alert("Login failed, please try again.");
     }
   }

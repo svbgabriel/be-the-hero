@@ -8,8 +8,6 @@ export default function NewIncidentForm() {
   async function handleNewIncident(e: Event) {
     e.preventDefault();
 
-    const ongId = localStorage.getItem("ongId");
-
     const data = {
       title,
       description,
@@ -21,7 +19,6 @@ export default function NewIncidentForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: ongId!,
         },
         body: JSON.stringify(data),
       });
@@ -31,7 +28,8 @@ export default function NewIncidentForm() {
       }
 
       globalThis.location.href = "/profile";
-    } catch (_err) {
+    }
+    catch (_err) {
       alert("Error registering case, please try again.");
     }
   }

@@ -1,17 +1,13 @@
-import { asset, Head } from "$fresh/runtime.ts";
-import { FiArrowLeft } from "react-icons/fi";
-import NewIncidentForm from "../../islands/NewIncidentForm.tsx";
+import { FiArrowLeft } from "@preact-icons/fi";
+import NewIncidentForm from "@/islands/NewIncidentForm.tsx";
 
 export default function NewIncident() {
   return (
     <>
-      <Head>
-        <link rel="stylesheet" href="/incidents.css" />
-      </Head>
       <div className="new-incident-container">
         <div className="content">
           <section>
-            <img src={asset("/logo.svg")} alt="Be The Hero" />
+            <img src="/logo.svg" alt="Be The Hero" />
 
             <h1>Register new case</h1>
             <p>

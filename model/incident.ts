@@ -3,5 +3,5 @@ export type Incident = {
   title: string;
   description: string;
   value: string;
-  ong_id: string;
+  ongId: string;
 };

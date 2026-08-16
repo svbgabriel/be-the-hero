@@ -1,46 +1,27 @@
-import { FiTrash2 } from "react-icons/fi";
-import { useEffect, useState } from "preact/hooks";
-import { Incident } from "../types/incident.ts";
+import { FiTrash2 } from "@preact-icons/fi";
+import { useState } from "preact/hooks";
+import { Incident } from "@/model/incident.ts";
 
-export default function IncidentsList() {
-  const [incidents, setIncidents] = useState<Incident[]>([]);
+interface IncidentsListProps {
+  initialIncidents?: Incident[];
+}
 
-  useEffect(() => {
-    const ongId = localStorage.getItem("ongId");
-    if (!ongId) return;
-
-    const fetchData = async () => {
-      const response = await fetch("/api/profile", {
-        headers: {
-          Authorization: ongId,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setIncidents(data);
-      }
-    };
-
-    fetchData().catch();
-  }, []);
+export default function IncidentsList({ initialIncidents = [] }: IncidentsListProps) {
+  const [incidents, setIncidents] = useState<Incident[]>(initialIncidents);
 
   const handleDeleteIncident = async (id: string) => {
-    const ongId = localStorage.getItem("ongId");
     try {
       const response = await fetch(`/api/incidents/${id}`, {
         method: "DELETE",
-        headers: {
-          Authorization: ongId!,
-        },
       });
 
       if (!response.ok) {
         throw new Error();
       }
 
-      setIncidents(incidents.filter((incident) => incident.id !== id));
-    } catch (_err) {
+      setIncidents((prev) => prev.filter((incident) => incident.id !== id));
+    }
+    catch (_err) {
       alert("Error deleting case, please try again.");
     }
   };
@@ -64,7 +45,7 @@ export default function IncidentsList() {
               }).format(Number(incident.value))}
             </p>
 
-            <button onClick={() => handleDeleteIncident(incident.id!)}>
+            <button type="button" onClick={() => handleDeleteIncident(incident.id!)}>
               <FiTrash2 size={20} color="#A8A8B3" />
             </button>
           </li>

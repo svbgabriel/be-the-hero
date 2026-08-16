@@ -1,13 +1,16 @@
-import { Handlers } from "$fresh/server.ts";
-import {
-  deleteIncident,
-  findIncident,
-} from "../../../repositories/incident_repository.ts";
+import { define } from "@/utils.ts";
+import { deleteIncident, findIncident } from "@/repository/incident.repository.ts";
 
-export const handler: Handlers<undefined | null> = {
-  async DELETE(req, ctx) {
+export const handler = define.handlers({
+  async DELETE(ctx) {
     const { id } = ctx.params;
-    const ong_id = req.headers.get("authorization");
+    const ongId = ctx.state?.ongId;
+
+    if (!ongId) {
+      return new Response(JSON.stringify({ error: "Not authorized" }), {
+        status: 401,
+      });
+    }
 
     const incident = await findIncident(id);
 
@@ -17,7 +20,7 @@ export const handler: Handlers<undefined | null> = {
       });
     }
 
-    if (incident.ong_id !== ong_id) {
+    if (incident.ongId !== ongId) {
       return new Response(
         JSON.stringify({ error: "Operation not permitted" }),
         { status: 401 },
@@ -28,4 +31,4 @@ export const handler: Handlers<undefined | null> = {
 
     return new Response(null, { status: 204 });
   },
-};
+});

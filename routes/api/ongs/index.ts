@@ -1,14 +1,14 @@
-import { Handlers } from "$fresh/server.ts";
-import { Ong } from "../../../types/ong.ts";
-import { createOng, listOngs } from "../../../repositories/ong_repository.ts";
+import { define } from "@/utils.ts";
+import { Ong } from "@/model/ong.ts";
+import { createOng, listOngs } from "@/repository/ong.repository.ts";
 
-export const handler: Handlers<Ong | null> = {
-  async GET(_req, _ctx) {
+export const handler = define.handlers({
+  async GET(_ctx) {
     const ongs: Ong[] = await listOngs();
     return new Response(JSON.stringify(ongs));
   },
-  async POST(req, _ctx) {
-    const body = await req.json();
+  async POST(ctx) {
+    const body = await ctx.req.json();
     const { name, email, whatsapp, city, uf } = body;
 
     const ong: Ong = {
@@ -27,4 +27,4 @@ export const handler: Handlers<Ong | null> = {
     }
     return new Response(JSON.stringify(result));
   },
-};
+});

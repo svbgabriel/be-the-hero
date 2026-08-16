@@ -1,11 +1,17 @@
 import { useEffect, useState } from "preact/hooks";
 
-export default function ProfileHeader() {
-  const [ongName, setOngName] = useState("");
+interface ProfileHeaderProps {
+  ongName?: string;
+}
+
+export default function ProfileHeader({ ongName: initialOngName }: ProfileHeaderProps) {
+  const [ongName, setOngName] = useState(initialOngName || "");
 
   useEffect(() => {
-    setOngName(localStorage.getItem("ongName") || "");
-  }, []);
+    if (!ongName) {
+      setOngName(localStorage.getItem("ongName") || "");
+    }
+  }, [ongName]);
 
   return <span>Welcome, {ongName}</span>;
 }

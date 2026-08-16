@@ -1,6 +1,6 @@
-import { assertEquals, assertExists } from "$std/assert/mod.ts";
-import { createOng, listOngs, findOng } from "../../repositories/ong_repository.ts";
-import { kv } from "../../database.ts";
+import { assertEquals, assertExists } from "@std/assert";
+import { createOng, findOng, listOngs } from "@/repository/ong.repository.ts";
+import { db } from "@/database.ts";
 
 Deno.test("OngRepository - should create an ONG", async () => {
   const ongData = {
@@ -17,7 +17,7 @@ Deno.test("OngRepository - should create an ONG", async () => {
   assertEquals(createdOng?.name, ongData.name);
 
   // Cleanup
-  await kv.delete(["ong", createdOng!.id!]);
+  db.prepare("DELETE FROM ongs WHERE id = ?").run(createdOng!.id!);
 });
 
 Deno.test("OngRepository - should list ONGs", async () => {
@@ -30,11 +30,11 @@ Deno.test("OngRepository - should list ONGs", async () => {
   });
 
   const ongs = await listOngs();
-  
-  assertExists(ongs.find(o => o.id === ong1?.id));
-  
+
+  assertExists(ongs.find((o) => o.id === ong1?.id));
+
   // Cleanup
-  await kv.delete(["ong", ong1!.id!]);
+  db.prepare("DELETE FROM ongs WHERE id = ?").run(ong1!.id!);
 });
 
 Deno.test("OngRepository - should find an ONG by ID", async () => {
@@ -47,10 +47,10 @@ Deno.test("OngRepository - should find an ONG by ID", async () => {
   });
 
   const found = await findOng(created!.id!);
-  
+
   assertEquals(found?.id, created?.id);
   assertEquals(found?.name, "Find Me");
 
   // Cleanup
-  await kv.delete(["ong", created!.id!]);
+  db.prepare("DELETE FROM ongs WHERE id = ?").run(created!.id!);
 });

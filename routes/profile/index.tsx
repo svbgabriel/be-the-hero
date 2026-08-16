@@ -1,27 +1,37 @@
-import { asset, Head } from "$fresh/runtime.ts";
-import Logout from "../../islands/Logout.tsx";
-import IncidentsList from "../../islands/IncidentsList.tsx";
-import ProfileHeader from "../../islands/ProfileHeader.tsx";
+import { define } from "@/utils.ts";
+import { listIncidentsByOng } from "@/repository/incident.repository.ts";
+import { findOng } from "@/repository/ong.repository.ts";
+import { Incident } from "@/model/incident.ts";
+import Logout from "@/islands/Logout.tsx";
+import IncidentsList from "@/islands/IncidentsList.tsx";
+import ProfileHeader from "@/islands/ProfileHeader.tsx";
 
-export default function Profile() {
+export default define.page(async function Profile(ctx) {
+  const ongId = ctx.state?.ongId;
+  let incidents: Incident[] = [];
+  let ongName = "";
+
+  if (ongId) {
+    incidents = await listIncidentsByOng(ongId);
+    const ong = await findOng(ongId);
+    if (ong) {
+      ongName = ong.name;
+    }
+  }
+
   return (
-    <>
-      <Head>
-        <link rel="stylesheet" href="/profile.css" />
-      </Head>
-      <div className="profile-container">
-        <header>
-          <img src={asset("/logo.svg")} alt="Be The Hero" />
-          <ProfileHeader />
+    <div className="profile-container">
+      <header>
+        <img src="/logo.svg" alt="Be The Hero" />
+        <ProfileHeader ongName={ongName} />
 
-          <a className="button" href="/incidents/new">
-            Register new case
-          </a>
-          <Logout />
-        </header>
+        <a className="button" href="/incidents/new">
+          Register new case
+        </a>
+        <Logout />
+      </header>
 
-        <IncidentsList />
-      </div>
-    </>
+      <IncidentsList initialIncidents={incidents} />
+    </div>
   );
-}
+});
